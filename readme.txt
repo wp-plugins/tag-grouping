@@ -44,3 +44,7 @@ Answer to foo bar dilemma.
 = 1.0 =
 
 * Initial release.
+
+== Special Thanks ==
+
+Special thanks to Thrasos Varnava Graphics at http://www.thvg.deviantart.com for making great art available!
