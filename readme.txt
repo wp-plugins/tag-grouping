@@ -21,24 +21,11 @@ If, later, you find that you want to add some new tags to your group, all of the
 4. Add them to your posts.
 5. Send any feedback or suggestions to mike@croutonsoflife.com
 
-== Frequently Asked Questions ==
-
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
-
-== Screenshots ==
-
-
 == Changelog ==
 
 = 1.0.1 =
 
-*Fixed header issue during Auto Save of a new post.
+* Fixed header issue during Auto Save of a new post.
 
 
 = 1.0 =
