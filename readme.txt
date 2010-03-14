@@ -23,10 +23,13 @@ If, later, you find that you want to add some new tags to your group, all of the
 
 == Changelog ==
 
+= 1.0.2 =
+
+* Fixed path for image icons.
+
 = 1.0.1 =
 
 * Fixed header issue during Auto Save of a new post.
-
 
 = 1.0 =
 

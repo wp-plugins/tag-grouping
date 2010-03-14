@@ -6,7 +6,7 @@ function group_tag_delete_page(){
     ?>
 <div class="wrap nosubsub">
     <div class="icon32">
-        <img src="<?php echo get_bloginfo('siteurl')?>/wp-content/plugins/TagGrouping/images/Group.png" height=36 width=36>
+        <img src="<?php echo get_bloginfo('siteurl')?>/wp-content/plugins/tag-grouping/images/Group.png" height=36 width=36>
         </img>
     </div>
 <h2>Delete Groups of Tags</h2></div>

@@ -1,7 +1,7 @@
 <?php
 
 function group_tag_admin_menu(){
-    add_menu_page('Manage your Tags', 'Group Tags', 'administrator', 'taggroup', 'group_tag_admin', get_bloginfo('siteurl')."/wp-content/plugins/TagGrouping/images/Group-icon.png");
+    add_menu_page('Manage your Tags', 'Group Tags', 'administrator', 'taggroup', 'group_tag_admin', get_bloginfo('siteurl')."/wp-content/plugins/tag-grouping/images/Group-icon.png");
     add_submenu_page( 'taggroup', 'Create a Group of Tags', 'Create Group', 'administrator', 'create_group', 'group_tag_create_page');
     add_submenu_page( 'taggroup', 'Delete a Group of Tags', 'Delete Groups', 'administrator', 'delete_group', 'group_tag_delete_page');
 }
@@ -10,7 +10,7 @@ function group_tag_create_page(){
     ?>
 <div class="wrap nosubsub">
     <div class="icon32">
-        <img src="<?php echo get_bloginfo('siteurl')?>/wp-content/plugins/TagGrouping/images/Group.png" height=36 width=36>
+        <img src="<?php echo get_bloginfo('siteurl')?>/wp-content/plugins/tag-grouping/images/Group.png" height=36 width=36>
         </img>
     </div>
 <h2>Create a Group</h2></div>
