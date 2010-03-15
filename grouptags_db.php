@@ -1,0 +1,287 @@
+<?php
+/*********************************************************************************
+    Query table wp_group_term_groups and get all group names.
+    Returns an array of group names.
+**********************************************************************************/
+
+function fetch_groupNames(){
+    global $wpdb;
+    $table_name = $wpdb->prefix . "group_term_groups";
+
+    $sql = "SELECT $table_name.groupName FROM $table_name";
+    $groups = $wpdb->get_col($sql,0);
+
+    return $groups;
+}
+
+/*********************************************************************************
+    Query table wp_group_term_groups and get all groups.
+    Returns an array of groups.
+**********************************************************************************/
+
+function fetch_groups(){
+    global $wpdb;
+    $table_name = $wpdb->prefix . "group_term_groups";
+
+    $sql = "SELECT * FROM $table_name";
+    $groups = $wpdb->get_results($sql);
+
+    return $groups;
+}
+
+/*********************************************************************************
+    Query table wp_group_term_groups and get a specific group.
+**********************************************************************************/
+
+function fetch_groupID($groupName){
+    global $wpdb;
+    $table_name = $wpdb->prefix . "group_term_groups";
+
+    $sql = "SELECT * FROM " . $table_name . " WHERE groupName = '" . $groupName . "'";
+
+    $groupID = $wpdb->get_row($sql, ARRAY_N);
+    foreach ($groupID as $group){
+        $groupID = $group;
+    }
+
+    return $groupID;
+}
+/*********************************************************************************
+    Query table wp_group_components and get all tags associated with a group.
+**********************************************************************************/
+
+//function fetch_tags($groupID){
+//    global $wpdb;
+//    $table_name = $wpdb->prefix . "group_components";
+//
+//    $results = $wpdb->get_results("SELECT * FROM $table_name WHERE $groupID = groupID");
+//    return $results;
+//}
+
+/*********************************************************************************
+    Query table wp_group_components and get all tags.
+**********************************************************************************/
+
+function fetch_all_tags(){
+    global $wpdb;
+    $table_terms = $wpdb->prefix . "terms";
+    $table_terms_tax = $wpdb->prefix . "term_taxonomy";
+
+    $results = $wpdb->get_results("SELECT " . $table_terms . ".term_id, " . $table_terms . ".name,
+    " . $table_terms_tax . ".term_id, " . $table_terms_tax . ".taxonomy FROM " . $table_terms . ", " . $table_terms_tax
+        . " WHERE " . $table_terms . ".term_id = " . $table_terms_tax . ".term_id AND " . $table_terms_tax . ".taxonomy =
+    'post_tag'");
+    return $results;
+}
+
+/*********************************************************************************
+    Query table wp_group_posts and get all tags for a specific post.
+**********************************************************************************/
+
+function fetch_post_tags_by_group($postID){
+    global $wpdb;
+    $table_group = $wpdb->prefix . "group_posts";
+    $table_components = $wpdb->prefix . "group_components";
+    $table_terms = $wpdb->prefix . "terms";
+
+    $sql = "SELECT * FROM " . $table_group . " JOIN (" . $table_components . "," .
+    $table_terms . ") ON (" . $table_group . ".postID = " . $postID . " AND " .
+    $table_components . ".groupID = " . $table_group . ".groupID AND " .
+    $table_terms . ".term_id = " . $table_components . ".termID)";
+
+    $results = $wpdb->get_results($sql);
+    return $results;
+}
+
+/*********************************************************************************
+    Prior to calling write_group_posts, this function should be called to
+    clear the groups that are associated with the working post. If it is not
+    called, there is a possibility that groups will be associated multiple
+    times per post.
+**********************************************************************************/
+
+function clear_group_posts(){
+    global $wpdb;
+    $local_post_ID = get_postID();
+
+    $table_name = $wpdb->prefix . "group_posts";
+
+    $sql = "DELETE FROM " . $table_name . " WHERE postID = $local_post_ID";
+    $results = $wpdb->query($sql);
+}
+
+/*********************************************************************************
+    Prior to calling write_group_tags, this function should be called to
+    clear the tags that are associated with the working group. If it is not
+    called, there is a possibility that tags will be associated multiple
+    times per group.
+**********************************************************************************/
+
+function clear_group_tags($groupID){
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . "group_components";
+
+    $sql = "DELETE FROM " . $table_name . " WHERE groupID = $groupID";
+    $results = $wpdb->query($sql);
+}
+/*********************************************************************************
+    Updates the database table wp_group_posts with all groups associated with
+    the working post.
+**********************************************************************************/
+
+function write_group_posts($groupID){
+    global $wpdb;
+    $local_post_ID = get_postID();
+
+    $table_name = $wpdb->prefix . "group_posts";
+    $sql = "INSERT INTO " . $table_name . " VALUES ($groupID,  $local_post_ID)";
+    $results = $wpdb->query($sql);
+
+}
+/*********************************************************************************
+    Retrieve all groups that have been associated with a post.
+    Returns an array of results.
+**********************************************************************************/
+
+function get_post_groups(){
+    global $wpdb;
+    $local_post_ID = get_postID();
+
+    $results ="";
+
+    $table_name = $wpdb->prefix . "group_posts";
+    $sql = "SELECT * FROM " . $table_name . " WHERE postID = $local_post_ID";
+    $results = $wpdb->get_results($sql);
+
+    return $results;
+}
+
+/*********************************************************************************
+ * Perform error handling and write the group to the database if it passes
+**********************************************************************************/
+
+function write_group($groupName){
+    global $wpdb;
+    $safe_groupName = $wpdb->escape($groupName);
+
+    $result = create_group_rules_check($safe_groupName);
+    if ($result == false){
+        $table_name = $wpdb->prefix . "group_term_groups";
+        $results = $wpdb->insert($table_name, array('groupName' => $safe_groupName));
+    } else{
+        echo $result;
+    }
+    return $result;
+}
+
+/*********************************************************************************
+ * This inserts the tag id and group id into the group components table.
+**********************************************************************************/
+
+function write_group_tags($groupID, $termID){
+    global $wpdb;
+    $i=0;
+
+    $table_name = $wpdb->prefix . "group_components";
+
+    foreach($termID as $term){
+        $results = $wpdb->insert($table_name, array('groupID' => $groupID[$i], 'termID' => $termID[$i]), array( '%d', '%d' ));
+        $i++;
+    }
+}
+
+/*********************************************************************************
+ * This is called when a user adds a group to a post while editting.
+**********************************************************************************/
+
+function update_term_relationships_from_post($groupID){
+    global $wpdb;
+    $local_post_ID = get_postID();
+
+    $table_group_components = $wpdb->prefix . "group_components";
+
+    $sql = "SELECT " . $table_group_components . ".termID, " . $wpdb->term_taxonomy . ".term_taxonomy_id FROM " .
+    $table_group_components . ", " . $wpdb->term_taxonomy . " WHERE " . $table_group_components . ".groupID = " . $groupID .
+     " AND " . $wpdb->term_taxonomy . ".term_id = " . $table_group_components . ".termID";
+
+    $results = $wpdb->get_results($sql);
+
+    foreach ($results as $result){
+        $run = $wpdb->query("INSERT IGNORE INTO " . $wpdb->term_relationships . " SET " .
+         "object_id = ". $local_post_ID . ", " .
+         "term_taxonomy_id = " . $result->term_taxonomy_id .
+         ", term_order = 0");
+    }
+}
+
+/*********************************************************************************
+ * This is called when a user adds tags to a group allowing existing posts that
+ * utilize the group selected to be updated with the new tags.
+**********************************************************************************/
+
+function update_term_relationships_from_group($groupID, $tagArray){
+    global $wpdb;
+    $local_post_ID = get_postID();
+
+    $tag_string="";
+
+    $table_group_posts = $wpdb->prefix . "group_posts";
+
+    foreach ($tagArray as $tag){
+        if (end($tagArray) != $tag){
+            $tag_string += $table_group_posts . ".termID = " . $tag . " AND " ;
+        }
+        else
+        {
+            $tag_string += $table_group_posts . ".termID = " . $tag;
+        }
+    }
+
+    $sql = "SELECT " . $table_group_posts . ".postID FROM " . $table_group_posts . " WHERE "
+    . $table_group_posts . ".groupID = " . $groupID . " AND " . $tag_string;
+
+    $results = $wpdb->get_results($sql);
+
+    foreach ($results as $result){
+        $run = $wpdb->query("INSERT IGNORE INTO " . $wpdb->term_relationships . " SET " .
+         "object_id = ". $local_post_ID . ", " .
+         "term_taxonomy_id = " . $result->term_taxonomy_id .
+         ", term_order = 0");
+    }
+}
+function delete_groups($groups){
+    global $wpdb;
+
+    $table_group_posts = $wpdb->prefix . "group_posts";
+    $table_group_components = $wpdb->prefix . "group_components";
+    $table_group_term_groups = $wpdb->prefix . "group_term_groups";
+
+    foreach ($groups as $group){
+        $sql = "DELETE FROM " . $table_group_posts . " WHERE groupID = " . $group;
+        $results = $wpdb->query($sql);
+
+        $sql = "DELETE FROM " . $table_group_components . " WHERE groupID = " . $group;
+        $results = $wpdb->query($sql);
+
+        $sql = "DELETE FROM " . $table_group_term_groups . " WHERE groupID = " . $group;
+        $results = $wpdb->query($sql);
+    }
+}
+
+function determine_parent($postID){
+    global $wpdb;
+
+    $table_posts = $wpdb_prefix . "posts";
+
+    $sql = "SELECT post_parent FROM " . $table_posts . " WHERE ID = " . $postID;
+
+    $results = $wpdb->query($sql);
+
+    if ($results == 0){
+        return $postID;
+    }
+    else {
+        return $results;
+    }
+}
