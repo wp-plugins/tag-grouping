@@ -268,3 +268,20 @@ function delete_groups($groups){
         $results = $wpdb->query($sql);
     }
 }
+
+function determine_parent($postID){
+    global $wpdb;
+
+    $table_posts = $wpdb_prefix . "posts";
+
+    $sql = "SELECT post_parent FROM " . $table_posts . " WHERE ID = " . $postID;
+
+    $results = $wpdb->query($sql);
+
+    if ($results == 0){
+        return $postID;
+    }
+    else {
+        return $results;
+    }
+}

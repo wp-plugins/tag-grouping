@@ -7,7 +7,7 @@ Version: 1.0
 Author: Michael Gunnett
 Author URI: http://www.croutonsoflife.com
 
-Copyright YEAR  PLUGIN_AUTHOR_NAME  (email : PLUGIN AUTHOR EMAIL)
+2010  Michael Gunnett  (mike@croutonsoflife.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as
@@ -62,6 +62,7 @@ function taggroups_post_box(){
     $groups = fetch_groups();
 
     if (sizeof($groups) > 0){
+        ?><form method="post" name="group_selections"><?php
         foreach ($groups as $group)
         {
             $found = false;
@@ -87,6 +88,7 @@ function taggroups_post_box(){
             }
         ?><BR><BR><?php
         echo "Enable the groups that contain tags you want to include with your post.";
+        echo "</form>";
         }
     else
         {
@@ -115,7 +117,8 @@ else
     $groups = fetch_groups();
     foreach ($groups as $group)
     {
-        if(isset($_POST[$group->groupName]))
+        $group1 = str_replace(" ", "_",$group->groupName);
+        if(isset($_POST[$group1]))
         {
             write_group_posts($group->groupID);
             update_term_relationships_from_post($group->groupID);
@@ -132,8 +135,8 @@ from inside the Wordpress loop for use later, when outside the loop.
 function retrieve_postID($content){
     global $post;
     global $post_ID;
-    $post_ID = $post;
-
+    $post_ID = $post->ID;
+    
     return $content;
 }
 

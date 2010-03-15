@@ -71,7 +71,8 @@ if (sizeof($groups) > 0){
         $i=0;
         if(isset($_POST['delete_group'])){
             foreach($groups as $group){
-                if(isset($_POST[$group->groupName])){
+                $group1 = str_replace(" ", "_",$group->groupName);
+                if(isset($_POST[$group1])){
                     $groupArray[] = fetch_groupID($group->groupName);
                     $i++;
                 }

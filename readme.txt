@@ -3,8 +3,8 @@ Contributors: gunnettmd
 Donate link: http://www.croutonsoflife.com/
 Tags: tags, group, post
 Requires at least: 2.9.1
-Tested up to: 2.9.1
-Stable tag: 1.0.3
+Tested up to: 2.9.2
+Stable tag: 1.0.4
 
 Create logical and meaningful groups of tags. Update old posts by updating your tag group. Add tags in bulk with 1 selection.
 
@@ -22,6 +22,10 @@ If, later, you find that you want to add some new tags to your group, all of the
 5. Send any feedback or suggestions to mike@croutonsoflife.com
 
 == Changelog ==
+
+= 1.0.4 =
+
+* Fixed issue with Group names containing spaces during Post editting and Group deleting.
 
 = 1.0.3 =
 
