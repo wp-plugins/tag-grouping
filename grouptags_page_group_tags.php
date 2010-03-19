@@ -33,18 +33,18 @@ if (sizeof($groups) > 0){
         <?php
     }
     ?>
-    </select><input type="submit" name="manage_group" id ="manage_group" class="button-primary" value="<?php _e('Update Group') ?>" /></table>
+    </select></table>
     <BR><BR>
     <div class="wrap">
         <table class="widefat page fixed">
             <thead>
                 <tr>
                     <th scope="col" id="cb" class="widefat page fixed" style="" width=30%>
-                        <input type="button" value="<?php _e('Check all Tags')?>" onClick="toggleCheckboxes('parent_box')">
+                        <input type="button" class="button-secondary" style="width:100px" value="<?php _e('Check all Tags')?>" onClick="toggleCheckboxes('parent_box')">
                     </th>
                 </tr>
             </thead>
-            <tbody id="parent_box">
+            <tbody id="parent_box" style="height: 250px; overflow: auto">
                 <?php
                 foreach ($tags as $tag){
                     ?>
@@ -60,8 +60,8 @@ if (sizeof($groups) > 0){
             }
             ?></tbody>
             <tfoot>
-                <tr><th scope="col" id="cb" class="widefat page fixed" style="" width=30%>
-                        <input type="button" value="<?php _e('Check all Tags')?>" onClick="toggleCheckboxes('parent_box')">
+                <tr>
+                    <th scope="col" id="cb" class="widefat page fixed" style="" width=30%>
                     </th>
                 </tr>
             </tfoot>

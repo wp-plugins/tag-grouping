@@ -14,13 +14,12 @@ function group_tag_create_page(){
         </img>
     </div>
 <h2>Create a Group</h2></div>
-<p class="wp-caption-text">Type the Group Name. Select the tags you would like to assign to the group. Click "Check all Tags" to select all tags in the list. Click Create.
+<p class="wp-caption-text">Type the Group Name. Select the tags you would like to assign to the group. Click "Check all Tags" to select all tags in the list. Click Create Group.
 <BR><BR>When you are creating or editting a Post, the <B>Tag Groups</B> are listed in the bottom-right of the screen.</p>
 <div width=50%; align=left>
     <form method="post" name="tag_selections">
     <table class="form-table"><BR>
         Group Name:<input type="text" name="groupName" id="groupName" />
-        <input type="submit" name="create_group" id ="create_group1" class="button-primary" value="<?php _e('Create') ?>" />
     </table>
 </div>
 <BR><BR>
@@ -31,12 +30,12 @@ $results = fetch_all_tags();
     <table class="widefat page fixed">
         <thead>
             <tr>
-                <th scope="col" id="cb" class="widefat page fixed" style="" width=30%>
-                    <input type="button" value="<?php _e('Check all Tags')?>" onClick="toggleCheckboxes('parent_box')">
+                <th scope="col" id="cb" class="widefat page fixed" width=30%>
+                    <input type="button" class="button-secondary" style="width:100px" value="<?php _e('Check all Tags')?>" onClick="toggleCheckboxes('parent_box')">
                 </th>
             </tr>
         </thead>
-        <tbody id="parent_box">
+        <tbody id="parent_box" style="height: 250px; overflow: auto">
             <?php
             foreach ($results as $result){
                 ?>
@@ -52,14 +51,14 @@ $results = fetch_all_tags();
         }
         ?></tbody>
         <tfoot>
-            <tr><th scope="col" id="cb" class="widefat page fixed" style="" width=30%>
-                    <input type="button" value="<?php _e('Check all Tags')?>" onClick="toggleCheckboxes('parent_box')">
+            <tr>
+                <th scope="col" id="cb" class="widefat page fixed" width=30%>
                 </th>
             </tr>
         </tfoot>
     </table>
     <BR>
-    <input type="submit" name="create_group" id ="create_group" class="button-primary" value="<?php _e('Create') ?>" />
+    <input type="submit" name="create_group" id ="create_group" class="button-primary" value="<?php _e('Create Group') ?>" />
 </div>
 </form>
 
