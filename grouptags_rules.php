@@ -76,7 +76,7 @@ function find_unique_tags($postID){
 
 function check_duplicate($groupName){
     foreach(fetch_groups() as $group){
-        if ($groupName == $group){
+        if ($groupName == $group->groupName){
             return "<div id='error' class='error'>Group Name already exists. Please try another.</div>";
         }
     }
