@@ -46,20 +46,9 @@ function fetch_groupID($groupName){
 
     return $groupID;
 }
-/*********************************************************************************
-    Query table wp_group_components and get all tags associated with a group.
-**********************************************************************************/
-
-//function fetch_tags($groupID){
-//    global $wpdb;
-//    $table_name = $wpdb->prefix . "group_components";
-//
-//    $results = $wpdb->get_results("SELECT * FROM $table_name WHERE $groupID = groupID");
-//    return $results;
-//}
 
 /*********************************************************************************
-    Query table wp_group_components and get all tags.
+    get all tags.
 **********************************************************************************/
 
 function fetch_all_tags(){
@@ -71,6 +60,22 @@ function fetch_all_tags(){
     " . $table_terms_tax . ".term_id, " . $table_terms_tax . ".taxonomy FROM " . $table_terms . ", " . $table_terms_tax
         . " WHERE " . $table_terms . ".term_id = " . $table_terms_tax . ".term_id AND " . $table_terms_tax . ".taxonomy =
     'post_tag'");
+    return $results;
+}
+
+/*********************************************************************************
+    Get Tag ID.
+**********************************************************************************/
+
+function fetch_termID($tagName){
+    global $wpdb;
+    $table_terms = $wpdb->prefix . "terms";
+    $i=0;
+
+    $sql = "SELECT term_id FROM " . $table_terms . " WHERE " . $table_terms . ".name = '" . $tagName ."'";
+
+    $results = $wpdb->get_var($sql);
+
     return $results;
 }
 
@@ -179,15 +184,30 @@ function write_group($groupName){
  * This inserts the tag id and group id into the group components table.
 **********************************************************************************/
 
-function write_group_tags($groupID, $termID){
+function write_group_tags($groupID, $termIDs){
     global $wpdb;
-    $i=0;
+    $groupID = $groupID[0];
 
     $table_name = $wpdb->prefix . "group_components";
 
-    foreach($termID as $term){
-        $results = $wpdb->insert($table_name, array('groupID' => $groupID[$i], 'termID' => $termID[$i]), array( '%d', '%d' ));
-        $i++;
+    foreach($termIDs as $term){
+        $results = $wpdb->get_results("INSERT INTO " . $table_name . " SET termID = " . $term . ", groupID = " . $groupID);
+    }
+}
+
+/*********************************************************************************
+ * This inserts the tag id and group id into the group components table.
+**********************************************************************************/
+
+function write_group_tag($groupID, $term){
+    if (($term != "") && ($term != NULL)){
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . "group_components";
+
+        $sql = "INSERT INTO " . $table_name . " SET termID = " . $term . ", groupID = " . $groupID;
+
+        $results = $wpdb->query($sql);
     }
 }
 
@@ -250,6 +270,11 @@ function update_term_relationships_from_group($groupID, $tagArray){
          ", term_order = 0");
     }
 }
+
+/*********************************************************************************
+ * This is called when a user chooses to delete an existing group or groups.
+**********************************************************************************/
+
 function delete_groups($groups){
     global $wpdb;
 
@@ -269,19 +294,40 @@ function delete_groups($groups){
     }
 }
 
-function determine_parent($postID){
+/*********************************************************************************
+ * This is called when a user adds new tags while creating or editting a group.
+**********************************************************************************/
+
+function write_array_of_tags($tags, $slugs){
     global $wpdb;
+    $table_terms = $wpdb->prefix . "terms";
+    $table_term_taxonomy = $wpdb->term_taxonomy;
+    $i=0;
 
-    $table_posts = $wpdb_prefix . "posts";
-
-    $sql = "SELECT post_parent FROM " . $table_posts . " WHERE ID = " . $postID;
-
-    $results = $wpdb->query($sql);
-
-    if ($results == 0){
-        return $postID;
+    if (count($tags) > 1){
+        foreach ($tags as $tag){
+            //Dont write out a blank tag.
+            if ($tag != ""){
+                //Insert the new tags made by the user.
+                $results = $wpdb->query("INSERT IGNORE INTO " . $table_terms . " SET name = '" . $tag . "', slug = '" . $slugs[$i] . "', term_group = 0");
+                //Get the ID for the new tags.
+                $termID = $wpdb->get_results("SELECT term_id FROM " . $table_terms . " WHERE name = '" . $tag . "'");
+                //Update the taxonomy table to show that these are post tags.
+                foreach ($termID as $term){
+                    $results = $wpdb->query("INSERT IGNORE INTO " . $table_term_taxonomy . " SET term_id = " . $term->term_id . ", taxonomy = 'post_tag', description = '', parent = 0, count = 0");
+                }
+                $i++;
+            }
+        }
     }
-    else {
-        return $results;
+    else if ((count($tags) == 1) && ($tags != "")){
+        //Insert the new tags made by the user.
+        $results = $wpdb->query("INSERT IGNORE INTO " . $table_terms . " SET name = '" . $tags . "', slug = '" . $slugs . "', term_group = 0");
+        //Get the ID for the new tags.
+        $termID = $wpdb->get_results("SELECT term_id FROM " . $table_terms . " WHERE name = '" . $tags . "'");
+        //Update the taxonomy table to show that these are post tags.
+        foreach ($termID as $term){
+            $results = $wpdb->query("INSERT IGNORE INTO " . $table_term_taxonomy . " SET term_id = " . $term->term_id . ", taxonomy = 'post_tag', description = '', parent = 0, count = 0");
+        }
     }
 }

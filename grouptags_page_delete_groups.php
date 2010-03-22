@@ -49,7 +49,7 @@ if (sizeof($groups) > 0){
             </tfoot>
         </table>
         <BR>
-        <input type="submit" name="delete_group" id ="delete_group" class="button-primary" value="<?php _e('Delete Group(s)') ?>" />
+        <input type="submit" name="delete_group" id ="delete_group" class="button-primary" value="<?php _e('Submit') ?>" />
     </div>
 </form>
 
