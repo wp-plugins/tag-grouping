@@ -84,33 +84,6 @@ if (sizeof($groups) > 0){
             </tfoot>
         </table>
     </div>
-
-    <SCRIPT LANGUAGE="JavaScript">
-        function toggleCheckboxes(id) {
-            if (!document.getElementById){ return; }
-            if (!document.getElementsByTagName){ return; }
-            var inputs = document.getElementById(id).getElementsByTagName("input");
-            for(var x=0; x < inputs.length; x++) {
-                if (inputs[x].type == 'checkbox'){
-                    inputs[x].checked = !inputs[x].checked;
-                }
-            }
-        }
-    function displayDiv()
-    {
-        var divstyle = new String();
-        divstyle = document.getElementById("instructions").style.display;
-        if(divstyle.toLowerCase()=="block" || divstyle == "")
-        {
-            document.getElementById("instructions").style.display = "none";
-        }
-        else
-        {
-            document.getElementById("instructions").style.display = "block";
-        }
-    }
-    </SCRIPT>
-
     <BR>
     <input type="submit" name="manage_group" id ="manage_group" class="button-primary" value="<?php _e('Submit') ?>" />
 </form>
@@ -137,7 +110,7 @@ if(isset($_POST['manage_group'])){
         $found = true;
     }
 
-    if (($i > 0) && ($found != false)){
+    if (($i > 0) || ($found != false)){
         $result = update_group_rules($tags);
         if (($result == false)){
             clear_group_tags($groupID);
@@ -148,7 +121,7 @@ if(isset($_POST['manage_group'])){
                 updateTagsFromText($groupID, $newtag, $tagArray);
             }
 
-            echo "<div id='message' class='updated fade below-h2'>Group updated successfully.</div>";
+            echo "<div id='message' class='updated fade'>Group updated successfully.</div>";
         }
     }
     else{

@@ -82,34 +82,6 @@ $results = fetch_all_tags();
     <input type="submit" name="create_group" id ="create_group" class="button-primary" value="<?php _e('Submit') ?>" />
 </div>
 </form>
-
-    <SCRIPT LANGUAGE="JavaScript">
-        function toggleCheckboxes(id) {
-            if (!document.getElementById){ return; }
-            if (!document.getElementsByTagName){ return; }
-            var inputs = document.getElementById(id).getElementsByTagName("input");
-            for(var x=0; x < inputs.length; x++) {
-                if (inputs[x].type == 'checkbox'){
-                    inputs[x].checked = !inputs[x].checked;
-                }
-            }
-        }
-
-    function displayDiv()
-    {
-        var divstyle = new String();
-        divstyle = document.getElementById("instructions").style.display;
-        if(divstyle.toLowerCase()=="block" || divstyle == "")
-        {
-            document.getElementById("instructions").style.display = "none";
-        }
-        else
-        {
-            document.getElementById("instructions").style.display = "block";
-        }
-    }
-    </SCRIPT>
-
     <?php
     if(isset($_POST['create_group'])){
         $groupName = $_POST['groupName'];
@@ -139,7 +111,7 @@ $results = fetch_all_tags();
                 {
                     write_group_tags($groupArray, $tagArray);
                 }
-                echo "<div id='message' class='updated fade below-h2'>Group created.</div>";
+                echo "<div id='message' class='updated fade'>Group created.</div>";
             }
         }
         else{

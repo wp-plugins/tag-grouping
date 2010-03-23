@@ -52,20 +52,6 @@ if (sizeof($groups) > 0){
         <input type="submit" name="delete_group" id ="delete_group" class="button-primary" value="<?php _e('Submit') ?>" />
     </div>
 </form>
-
-    <SCRIPT LANGUAGE="JavaScript">
-        function toggleCheckboxes(id) {
-            if (!document.getElementById){ return; }
-            if (!document.getElementsByTagName){ return; }
-            var inputs = document.getElementById(id).getElementsByTagName("input");
-            for(var x=0; x < inputs.length; x++) {
-                if (inputs[x].type == 'checkbox'){
-                    inputs[x].checked = !inputs[x].checked;
-                }
-            }
-        }
-    </SCRIPT>
-
         <?php
         $groups = fetch_groups();
         $i=0;
@@ -81,7 +67,7 @@ if (sizeof($groups) > 0){
                 delete_groups($groupArray);
                 echo '<script>document.location.replace("' . get_bloginfo("siteurl") . '/wp-admin/admin.php?page=delete_group");</script>';
 
-                echo "<div id='message' class='updated fade below-h2'>Group(s) deleted.</div>";
+                echo "<div id='message' class='updated fade'>Group(s) deleted.</div>";
             }
         }
     }
