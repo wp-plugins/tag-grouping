@@ -6,10 +6,18 @@ function group_tag_admin(){
         <img src="<?php echo get_bloginfo('siteurl')?>/wp-content/plugins/tag-grouping/images/Group.png" height=36 width=36>
         </img>
     </div>
-    <h2>Group Your Tags</h2>
-    <p class="wp-caption-text"><B>NOTE:</B> <I>Changes made on this page will over-ride all of your existing tag assignments in the Group. If you wish to retain your previous tag assignments, you must re-select them.</I>
-    <BR><BR><B>TIP:</B> <I>If you wish to create a new Group, go to <a href="<?php $url ?>admin.php?page=create_group">Create Group</a>.</I>
-    <BR><BR>Select a Group from the drop-down list. Select the tags you would like to assign to the Group. Click "Check all Tags" to select all tags in the list. Click Update Group.</p>
+    <h2>Group Your Tags <input type="button" class="button-secondary" value="Instructions" onclick="displayDiv()" /></h2>
+    <p id="instructions" class="popular-tags" style="display: none">
+    <b>1. </b>Select the Group Name from the Group Name dropfield.
+    <BR>
+    <B>2. </B>To add tags to your Group, do one of the following:
+    <BR>
+    Select the tags you would like to assign to the Group by enabling the checkboxes below. Click "Check all Tags" to select all tags in the list.
+    <BR><i> - OR - </i>
+    <BR>
+    Type the tags you wish to add to the Group into the textfield below, separated by commas.
+    <BR>
+    <b>3. </b>Click the Submit button when you are finished.</p>
 </div>
 <?php
 $groups = fetch_groupNames();
@@ -19,32 +27,41 @@ if (sizeof($groups) > 0){
     ?>
 
 <form method="post" name="manage_group">
-    <BR><table>Select a Group:
-    <select name="groupDropDown" style="width:200px">
+    <table class="form-table">
+        <tr>
+            <td width=15%; align=left>
+            Select a Group: <BR>
+            <select name="groupDropDown" style="width:200px">
+            <?php
 
-        <?php
-
-        foreach ($groups as $group)
-        {
+               foreach ($groups as $group)
+               {
+                   ?>
+                    <option id="<?php echo $group ?>">
+                        <?php echo $group ?>
+                    </option>
+                   <?php
+               }
             ?>
-        <option id="<?php echo $group ?>">
-            <?php echo $group ?>
-        </option>
-        <?php
-    }
-    ?>
-    </select><input type="submit" name="manage_group" id ="manage_group" class="button-primary" value="<?php _e('Update Group') ?>" /></table>
+            </select>
+            </td>
+            <td width=15%; align=left><BR><BR>
+                <?php echo createTagDisplayObject();?>
+            </td>
+            <td></td>
+        </tr>
+    </table>
     <BR><BR>
     <div class="wrap">
         <table class="widefat page fixed">
             <thead>
                 <tr>
                     <th scope="col" id="cb" class="widefat page fixed" style="" width=30%>
-                        <input type="button" value="<?php _e('Check all Tags')?>" onClick="toggleCheckboxes('parent_box')">
+                        <input type="button" class="button-secondary" style="width:100px" value="<?php _e('Check all Tags')?>" onClick="toggleCheckboxes('parent_box')">
                     </th>
                 </tr>
             </thead>
-            <tbody id="parent_box">
+            <tbody id="parent_box" style="height: 250px; overflow: auto">
                 <?php
                 foreach ($tags as $tag){
                     ?>
@@ -60,8 +77,8 @@ if (sizeof($groups) > 0){
             }
             ?></tbody>
             <tfoot>
-                <tr><th scope="col" id="cb" class="widefat page fixed" style="" width=30%>
-                        <input type="button" value="<?php _e('Check all Tags')?>" onClick="toggleCheckboxes('parent_box')">
+                <tr>
+                    <th scope="col" id="cb" class="widefat page fixed" style="" width=30%>
                     </th>
                 </tr>
             </tfoot>
@@ -79,18 +96,33 @@ if (sizeof($groups) > 0){
                 }
             }
         }
+    function displayDiv()
+    {
+        var divstyle = new String();
+        divstyle = document.getElementById("instructions").style.display;
+        if(divstyle.toLowerCase()=="block" || divstyle == "")
+        {
+            document.getElementById("instructions").style.display = "none";
+        }
+        else
+        {
+            document.getElementById("instructions").style.display = "block";
+        }
+    }
     </SCRIPT>
 
     <BR>
-    <input type="submit" name="manage_group" id ="manage_group" class="button-primary" value="<?php _e('Update Group') ?>" />
+    <input type="submit" name="manage_group" id ="manage_group" class="button-primary" value="<?php _e('Submit') ?>" />
 </form>
 <?php
 if(isset($_POST['manage_group'])){
     $group = $_POST['groupDropDown'];
+    $newtag = $_POST['newtag'];
     $groupID = fetch_groupID($group);
 
     $tags = fetch_all_tags();
 
+    $found = false;
     $i=0;
 
     foreach ($tags as $tag){
@@ -100,12 +132,21 @@ if(isset($_POST['manage_group'])){
             $i++;
         }
     }
-    if ($i > 0){
+
+    if (count($newtag) > 0){
+        $found = true;
+    }
+
+    if (($i > 0) && ($found != false)){
         $result = update_group_rules($tags);
         if (($result == false)){
             clear_group_tags($groupID);
             write_group_tags($groupArray, $tagArray);
             update_term_relationships_from_group($groupID, $tagArray);
+
+             if (($newtag != '') && ($newtag != NULL)){
+                updateTagsFromText($groupID, $newtag, $tagArray);
+            }
 
             echo "<div id='message' class='updated fade below-h2'>Group updated successfully.</div>";
         }
