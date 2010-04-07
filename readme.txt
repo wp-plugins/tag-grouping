@@ -4,14 +4,23 @@ Donate link: http://www.croutonsoflife.com/
 Tags: tags, group, post
 Requires at least: 2.9.1
 Tested up to: 2.9.2
-Stable tag: 1.0.4
+Stable tag: 1.1.1
 
 Create logical and meaningful groups of tags. Update old posts by updating your tag group. Add tags in bulk with 1 selection.
 
 == Description ==
 
-This plug-in allows administrators the ability to create groups of tags that they commonly use. These groups can be assigned to old/new posts.
-If, later, you find that you want to add some new tags to your group, all of the posts assigned to the group will receive the new tags.
+With a few simple steps you can transform your tags into a manageable bunch of groups. No more clicking on each tag for every post or pasting in a long string of tags.
+Now, with Tag Grouping, you can enable a checkbox for each group of tags you wish to associate with a post. When you save that post, the tags are added as if you were using the normal
+WordPress interface. As an added bonus, if you decide to alter a group of tags later and add more tags, all your posts with that group will receive the updated tag list.
+
+Creation of groups just got simpler with version 1.1. Now you can paste in your list of tags during the creation process and the plugin will automatically take care of splitting
+them up, comparing them to the existing tags, adding new ones to your database and adding all of them to your group.
+
+In a nutshell:
+
+* Create groups of tags quickly and easily that can be used on any post.
+* Retroactively add tags to multiple posts when updating an existing group that is contained by the posts.
 
 == Installation ==
 
@@ -23,7 +32,23 @@ If, later, you find that you want to add some new tags to your group, all of the
 
 == Changelog ==
 
-= 1.0.4 =
+= 1.1.1 =
+
+* More minor cosmetic updates (Success message now appears in the proper location).
+* Code management: reducing filesize where possible by sharing functions.
+* Minor bug fixes.
+
+= 1.1 =
+
+* Minor update that includes the ability to paste in a string of tags (separated by commas) when creating or editting groups.
+* Minor cosmetic updates.
+
+= 1.0.6 =
+
+* Fixed issue where validation for identical group names was not working.
+* Minor GUI updates to keep screens more manageable by adding scrollbars and removing excess buttons.
+
+= 1.0.5 =
 
 * Fixed issue with Group names containing spaces during Post editting and Group deleting.
 
