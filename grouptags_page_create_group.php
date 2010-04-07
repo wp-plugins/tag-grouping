@@ -83,6 +83,8 @@ $results = fetch_all_tags();
         if (($groupName != "") && ($groupName != NULL)){
             $result = write_group($_POST['groupName']);
             $group = $_POST['groupName'];
+
+            echo "<script>alert('$group')</script>";
             $groupID = fetch_groupID($group);
             $tagArray=NULL;
         
