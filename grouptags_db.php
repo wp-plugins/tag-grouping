@@ -134,6 +134,7 @@ function write_group_posts($groupID){
     global $wpdb;
     $local_post_ID = get_postID();
 
+    echo "<script>alert('$local_post_ID')</script>";
     $table_name = $wpdb->prefix . "group_posts";
     $sql = "INSERT INTO " . $table_name . " VALUES ($groupID,  $local_post_ID)";
     $results = $wpdb->query($sql);
