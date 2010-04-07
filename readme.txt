@@ -4,7 +4,7 @@ Donate link: http://www.croutonsoflife.com/
 Tags: tags, group, post
 Requires at least: 2.9.1
 Tested up to: 2.9.2
-Stable tag: 1.1.1
+Stable tag: 1.2
 
 Create logical and meaningful groups of tags. Update old posts by updating your tag group. Add tags in bulk with 1 selection.
 
@@ -31,6 +31,11 @@ In a nutshell:
 5. Send any feedback or suggestions to mike@croutonsoflife.com
 
 == Changelog ==
+
+= 1.2 =
+
+* Updated Edit Existing Groups to display tags already assigned to the group.
+  * For a future update the tags that already belong to the group will also be checked.
 
 = 1.1.1 =
 

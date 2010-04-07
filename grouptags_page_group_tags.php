@@ -1,5 +1,7 @@
 <?php
+
 function group_tag_admin(){
+    
     ?>
 <div class="wrap nosubsub">
     <div class="icon32">
@@ -19,30 +21,45 @@ function group_tag_admin(){
     <BR>
     <b>3. </b>Click the Submit button when you are finished.</p>
 </div>
+
 <?php
 $groups = fetch_groupNames();
 $tags = fetch_all_tags();
 
 if (sizeof($groups) > 0){
     ?>
-
 <form method="post" name="manage_group">
     <table class="form-table">
         <tr>
             <td width=15%; align=left>
             Select a Group: <BR>
-            <select name="groupDropDown" style="width:200px">
-            <?php
+            <select name="groupDropDown" style="width:200px" onChange="jQuery.post(
+                                                                        ajaxurl,
+                                                                        {
+                                                                            action : 'my-special-action',
 
-               foreach ($groups as $group)
-               {
-                   ?>
-                    <option id="<?php echo $group ?>">
-                        <?php echo $group ?>
-                    </option>
-                   <?php
-               }
-            ?>
+                                                                            groupName : this.value
+                                                                        },
+                                                                        function( response ) {
+                                                                            //alert(response);
+                                                                            document.getElementById('placeholder').innerHTML=response;
+                                                                        }
+                                                                    )
+                                                                    ">
+                <?php
+
+                   $i=0;
+
+                   foreach ($groups as $group)
+                   {
+                       ?>
+                        <option id="<?php echo $group ?>">
+                            <?php echo $group ?>
+                        </option>
+                       <?php
+                       $i++;
+                   }
+                ?>
             </select>
             </td>
             <td width=15%; align=left><BR><BR>
@@ -51,7 +68,10 @@ if (sizeof($groups) > 0){
             <td></td>
         </tr>
     </table>
-    <BR><BR>
+    <BR>
+    <div id="placeholder">
+    </div>
+    <BR>
     <div class="wrap">
         <table class="widefat page fixed">
             <thead>

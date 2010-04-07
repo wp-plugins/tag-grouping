@@ -1,3 +1,5 @@
+<script type="text/javascript" src="grouptags_return_group_tags.php"></script>
+
 function toggleCheckboxes(id) {
     if (!document.getElementById){
         return;
@@ -25,3 +27,19 @@ function displayDiv()
         document.getElementById("instructions").style.display = "block";
     }
 }
+//function disp_tags(){
+//    var w = document.manage_group.groupDropDown.selectedIndex;
+//    var selected_text = document.manage_group.groupDropDown.options[w].text;
+//
+//    var groupID = <?php echo fetch_groupID(selected_text) ?>;
+//    alert(groupID);
+//    var groupTags = new Array(<?php echo fetch_group_terms(groupID) ?>);
+//
+//    alert(groupTags.length);
+//
+//    for (var i = 0; i < groupTags.length; i++){
+//        alert (groupTags[i]);
+//    }
+//    //alert(selected_text);
+//}
+

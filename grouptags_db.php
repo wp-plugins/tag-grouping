@@ -99,6 +99,23 @@ function fetch_post_tags_by_group($postID){
 }
 
 /*********************************************************************************
+    Retrieve all tags associated with the specified group.
+**********************************************************************************/
+
+function fetch_group_terms($groupID){
+    global $wpdb;
+    $table_terms = $wpdb->prefix . "terms";
+    $table_components = $wpdb -> prefix . "group_components";
+
+    $sql = "SELECT name FROM " . $table_terms . " JOIN (" . $table_components . ") ON ("
+            . $table_terms . ".term_id = " . $table_components . ".termID AND "
+            . $table_components . ".groupID = " . $groupID .")";
+
+    $results = $wpdb->get_results($sql);
+
+    return $results;
+}
+/*********************************************************************************
     Prior to calling write_group_posts, this function should be called to
     clear the groups that are associated with the working post. If it is not
     called, there is a possibility that groups will be associated multiple

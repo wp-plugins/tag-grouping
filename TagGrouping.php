@@ -3,7 +3,7 @@
 Plugin Name: Tag Grouping
 Plugin URI: http://www.croutonsoflife.com/wordpress/tag-grouping-plug-in-documentation-for-wordpress
 Description: Create and maintain groups of commonly used tags for posts. Add these groups to posts without having to add them individually.
-Version: 1.1.1
+Version: 1.2
 Author: Michael Gunnett
 Author URI: http://www.croutonsoflife.com
 
@@ -31,6 +31,7 @@ include("grouptags_page_group_tags.php");
 include("grouptags_page_delete_groups.php");
 include("grouptags_rules.php");
 include("grouptags_add_create_tag_functions.php");
+include("grouptags_return_group_tags.php");
 
 global $post_ID;
 
@@ -40,23 +41,24 @@ register_activation_hook(__FILE__, 'taggroups_install');
 add_action ( 'admin_menu', 'render_tag_post_box' );
 add_action ( 'admin_menu', 'group_tag_admin_menu' );
 add_action ( 'save_post', 'update_group_posts' );
-add_action ('init', 'wp_load_scripts');
+add_action ( 'init', 'wp_load_scripts' );
+add_action ( 'wp_ajax_my-special-action', 'buildDivforTags' );
 
 /* Filter */
 add_filter( 'the_content', 'retrieve_postID');
 
 function render_tag_post_box()
 {
-    add_meta_box( 'taggroup_sectionID', 'Tag Groups', 'taggroups_post_box', 'post', 'side', 'low');
+    add_meta_box( 'taggroup_sectionID', 'Tag Groups', 'taggroups_post_box', 'post', 'side', 'low' );
 }	
 
 /*********************************************************************************
     Load javascript files for assorted pages.
 **********************************************************************************/
 function wp_load_scripts(){
-    $siteurl = get_bloginfo('siteurl');
-    wp_enqueue_script('my_script_handle', $siteurl.'/wp-content/plugins/tag-grouping/grouptags_scripts.js');
+    wp_enqueue_script('my_script_handle', plugin_dir_url( __FILE__ ) . 'grouptags_scripts.js');
 }
+
 /*********************************************************************************
     Generates the seletion box seen by the user when creating or modifying a
     Post. This box shows all groups and whether they are already enabled for
@@ -71,7 +73,8 @@ function taggroups_post_box(){
     $groups = fetch_groups();
 
     if (sizeof($groups) > 0){
-        ?><form method="post" name="group_selections"><?php
+        ?>
+        <form method="post" name="group_selections"><?php
         foreach ($groups as $group)
         {
             $found = false;
