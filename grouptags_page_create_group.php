@@ -80,25 +80,6 @@ $results = fetch_all_tags();
     </table>
     <BR>
 
-    <div class="inside">
-<div id="post_tag" class="tagsdiv">
-	<div class="jaxtag">
-	<div class="nojs-tags hide-if-js">
-	<p>Add or remove tags</p>
-	<textarea id="tax-input[post_tag]" class="the-tags" name="tax_input[post_tag]">class="error",class="updated fade",completion message,error message,id="error",id="message",message,plug-in,plugin,submit message,update message,Wordpress,wordpress error handling,wordpress plugin</textarea></div>
-
-	<div class="ajaxtag hide-if-no-js">
-		<label for="new-tag-post_tag" class="screen-reader-text">Post Tags</label>
-		<div class="taghint">Add new tag</div>
-		<input type="text" value="" autocomplete="off" size="16" class="newtag form-input-tip" name="newtag[post_tag]" id="new-tag-post_tag">
-		<input type="button" tabindex="3" value="Add" class="button tagadd">
-	</div></div>
-	<p class="howto">Separate tags with commas.</p>
-	<div class="tagchecklist"><span><a class="ntdelbutton" id="post_tag-check-num-0">X</a>&nbsp;class="error"</span> <span><a class="ntdelbutton" id="post_tag-check-num-1">X</a>&nbsp;class="updated fade"</span> <span><a class="ntdelbutton" id="post_tag-check-num-2">X</a>&nbsp;completion message</span> <span><a class="ntdelbutton" id="post_tag-check-num-3">X</a>&nbsp;error message</span> <span><a class="ntdelbutton" id="post_tag-check-num-4">X</a>&nbsp;id="error"</span> <span><a class="ntdelbutton" id="post_tag-check-num-5">X</a>&nbsp;id="message"</span> <span><a class="ntdelbutton" id="post_tag-check-num-6">X</a>&nbsp;message</span> <span><a class="ntdelbutton" id="post_tag-check-num-7">X</a>&nbsp;plug-in</span> <span><a class="ntdelbutton" id="post_tag-check-num-8">X</a>&nbsp;plugin</span> <span><a class="ntdelbutton" id="post_tag-check-num-9">X</a>&nbsp;submit message</span> <span><a class="ntdelbutton" id="post_tag-check-num-10">X</a>&nbsp;update message</span> <span><a class="ntdelbutton" id="post_tag-check-num-11">X</a>&nbsp;Wordpress</span> <span><a class="ntdelbutton" id="post_tag-check-num-12">X</a>&nbsp;wordpress error handling</span> <span><a class="ntdelbutton" id="post_tag-check-num-13">X</a>&nbsp;wordpress plugin</span> </div>
-</div>
-<p class="hide-if-no-js"><a id="link-post_tag" class="tagcloud-link" href="#titlediv">Choose from the most used tags in Post Tags</a></p>
-</div>
-
     <input type="submit" name="create_group" id ="create_group" class="button-primary" value="<?php _e('Submit') ?>" />
 </div>
 </form>
