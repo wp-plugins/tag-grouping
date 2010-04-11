@@ -40,11 +40,12 @@ if (sizeof($groups) > 0){
 
                                                                             groupName : this.value
                                                                         },
-                                                                        function( response ) {
-                                                                            //alert(response);
-                                                                            document.getElementById('placeholder').innerHTML=response;
-                                                                        }
-                                                                    )
+                                                                        function( response )
+                                                                        {
+                                                                            var message_result = eval('(' + response + ')');
+                                                                            document.getElementById('placeholder').innerHTML=message_result.existingTags;
+                                                                            document.getElementById('taglisting').innerHTML=message_result.checkedAndUnCheckedTags;
+                                                                        })
                                                                     ">
                 <?php
 
@@ -72,7 +73,7 @@ if (sizeof($groups) > 0){
     <div id="placeholder">
     </div>
     <BR>
-    <div class="wrap">
+    <div id="taglisting" class="wrap">
         <table class="widefat page fixed">
             <thead>
                 <tr>
@@ -86,7 +87,7 @@ if (sizeof($groups) > 0){
                 foreach ($tags as $tag){
                     ?>
                 <tr>
-                    <td >
+                    <td id="<?php echo $tag->term_id ?>">
                         <input type="checkbox" id="checkee" name="<?php echo $tag->term_id ?>" value="yes" />
                         <?php
                         echo $tag->name;
