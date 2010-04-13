@@ -3,7 +3,7 @@
 Plugin Name: Tag Grouping
 Plugin URI: http://www.croutonsoflife.com/wordpress/tag-grouping-plug-in-documentation-for-wordpress
 Description: Create and maintain groups of commonly used tags for posts. Add these groups to posts without having to add them individually.
-Version: 1.3
+Version: 1.3.1
 Author: Michael Gunnett
 Author URI: http://www.croutonsoflife.com
 
@@ -83,7 +83,7 @@ function taggroups_post_box(){
                 if ($checked_group->groupID == $group->groupID)
                 {
                     ?>
-                    <BR><input type="checkbox" id="<?php echo $group->groupID ?>" name="<?php echo $group->groupName ?>" value="1" checked />
+                    <BR><input type="checkbox" id="<?php echo $group->groupID ?>" name="<?php echo $group->groupName ?>" checked />
                     <?php
                     echo $group->groupName;
                     $found = true;
@@ -92,7 +92,7 @@ function taggroups_post_box(){
                 if ($found <> true)
                 {
                     ?>
-                    <BR><input type="checkbox" id="<?php echo $group->groupID ?>" name="<?php echo $group->groupName ?>" value="1" />
+                    <BR><input type="checkbox" id="<?php echo $group->groupID ?>" name="<?php echo $group->groupName ?>" />
                     <?php
                     echo $group->groupName;
                     $found = false;
