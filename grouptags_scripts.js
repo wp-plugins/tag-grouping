@@ -1,6 +1,7 @@
 <script type="text/javascript" src="grouptags_return_group_tags.php"></script>
 
 function toggleCheckboxes(id) {
+    
     if (!document.getElementById){
         return;
     }
@@ -14,6 +15,15 @@ function toggleCheckboxes(id) {
         }
     }
 }
+
+function toggleCheckbox(id) {
+    var input = document.getElementById(id);
+
+    if (input.type == 'checkbox'){
+        input.checked = !input.checked;
+    }
+}
+
 function displayDiv()
 {
     var divstyle = new String();

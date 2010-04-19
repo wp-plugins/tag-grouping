@@ -1,7 +1,7 @@
 <?php
 
 function group_tag_admin(){
-    
+
     ?>
 <div class="wrap nosubsub">
     <div class="icon32">
@@ -10,58 +10,58 @@ function group_tag_admin(){
     </div>
     <h2>Group Your Tags <input type="button" class="button-secondary" value="Instructions" onclick="displayDiv()" /></h2>
     <p id="instructions" class="popular-tags" style="display: none">
-    <b>1. </b>Select the Group Name from the Group Name dropfield.
-    <BR>
-    <B>2. </B>To add tags to your Group, do one of the following:
-    <BR>
-    Select the tags you would like to assign to the Group by enabling the checkboxes below. Click "Check all Tags" to select all tags in the list.
-    <BR><i> - OR - </i>
-    <BR>
-    Type the tags you wish to add to the Group into the textfield below, separated by commas.
-    <BR>
+        <b>1. </b>Select the Group Name from the Group Name dropfield.
+        <BR>
+        <B>2. </B>To add tags to your Group, do one of the following:
+        <BR>
+        Select the tags you would like to assign to the Group by enabling the checkboxes below. Click "Check all Tags" to select all tags in the list.
+        <BR><i> - OR - </i>
+        <BR>
+        Type the tags you wish to add to the Group into the textfield below, separated by commas.
+        <BR>
     <b>3. </b>Click the Submit button when you are finished.</p>
 </div>
 
-<?php
-$groups = fetch_groupNames();
-$tags = fetch_all_tags();
+    <?php
+    $groups = fetch_groupNames();
+    $tags = fetch_all_tags();
 
-if (sizeof($groups) > 0){
-    ?>
+    if (sizeof($groups) > 0){
+        ?>
 <form method="post" name="manage_group">
     <table class="form-table">
         <tr>
             <td width=15%; align=left>
-            Select a Group: <BR>
-            <select name="groupDropDown" style="width:200px" onChange="jQuery.post(
-                                                                        ajaxurl,
-                                                                        {
-                                                                            action : 'my-special-action',
+                Select a Group: <BR>
+                <select name="groupDropDown" style="width:200px" onChange="jQuery.post(
+                    ajaxurl,
+                    {
+                        action : 'my-special-action',
 
-                                                                            groupName : this.value
-                                                                        },
-                                                                        function( response )
-                                                                        {
-                                                                            var message_result = eval('(' + response + ')');
-                                                                            document.getElementById('placeholder').innerHTML=message_result.existingTags;
-                                                                            document.getElementById('taglisting').innerHTML=message_result.checkedAndUnCheckedTags;
-                                                                        })
-                                                                    ">
-                <?php
+                        groupName : this.value
+                    },
+                    function( response )
+                    {
+                        var message_result = eval('(' + response + ')');
+                        document.getElementById('placeholder').innerHTML=message_result.existingTags;
+                        document.getElementById('taglisting').innerHTML=message_result.checkedAndUnCheckedTags;
+                    })
+                        ">
+                        <?php
 
-                   $i=0;
+                        $i=0;
 
-                   foreach ($groups as $group)
-                   {
-                       ?>
-                        <option id="<?php echo $group ?>">
-                            <?php echo $group ?>
-                        </option>
-                       <?php
-                       $i++;
-                   }
+                        foreach ($groups as $group)
+                        {
+                            ?>
+                    <option id="<?php echo $group ?>">
+                        <?php echo $group ?>
+                    </option>
+                    <?php
+                    $i++;
+                }
                 ?>
-            </select>
+                </select>
             </td>
             <td width=15%; align=left><BR><BR>
                 <?php echo createTagDisplayObject();?>
@@ -74,7 +74,7 @@ if (sizeof($groups) > 0){
     </div>
     <BR>
     <div id="taglisting" class="wrap">
-        <table class="widefat page fixed">
+        <table id="taglisting-table" class="widefat page fixed">
             <thead>
                 <tr>
                     <th scope="col" id="cb" class="widefat page fixed" style="" width=30%>
@@ -82,21 +82,13 @@ if (sizeof($groups) > 0){
                     </th>
                 </tr>
             </thead>
-            <tbody id="parent_box" style="height: 250px; overflow: auto">
-                <?php
-                foreach ($tags as $tag){
-                    ?>
-                <tr>
-                    <td id="<?php echo $tag->term_id ?>">
-                        <input type="checkbox" id="checkee" name="<?php echo $tag->term_id ?>" value="yes" />
+            <tbody id="parent_box" style="height: 250px; overflow: auto; background-color: #ddd">
+
                         <?php
-                        echo $tag->name;
-                        ?>
-                    </td>
-                </tr>
-                <?php
-            }
-            ?></tbody>
+                        foreach ($tags as $tag){
+                            echo checkableTagElement($tag->term_id, $tag->name, 'false');
+                        }
+                        ?></tbody>
             <tfoot>
                 <tr>
                     <th scope="col" id="cb" class="widefat page fixed" style="" width=30%>
@@ -120,7 +112,7 @@ if(isset($_POST['manage_group'])){
     $i=0;
 
     foreach ($tags as $tag){
-        if(isset($_POST[$tag->term_id])){
+        if(isset($_POST['TG_CheckBox'.$tag->term_id])){
             $tagArray[$i] = $tag->term_id;
             $groupArray[$i] = $groupID;
             $i++;
@@ -138,7 +130,7 @@ if(isset($_POST['manage_group'])){
             write_group_tags($groupArray, $tagArray);
             update_term_relationships_from_group($groupID, $tagArray);
 
-             if (($newtag != '') && ($newtag != NULL)){
+            if (($newtag != '') && ($newtag != NULL)){
                 updateTagsFromText($groupID, $newtag, $tagArray);
             }
 

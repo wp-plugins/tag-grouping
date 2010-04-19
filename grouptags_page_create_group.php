@@ -56,19 +56,10 @@ $results = fetch_all_tags();
                 </th>
             </tr>
         </thead>
-        <tbody id="parent_box" style="height: 250px; overflow: auto">
+        <tbody id="parent_box" style="height: 250px; overflow: auto; background-color: #ddd">
             <?php
             foreach ($results as $result){
-                ?>
-            <tr>
-                <td>
-                    <input type="checkbox" name="<?php echo $result->term_id ?>" value="yes" />
-                    <?php
-                    echo $result->name;
-                    ?>
-                </td>
-            </tr>
-            <?php
+                echo checkableTagElement($result->term_id, $result->name, 'false');
         }
         ?></tbody>
         <tfoot>
@@ -98,7 +89,7 @@ $results = fetch_all_tags();
                 $i=0;
                 $tags = fetch_all_tags();
                 foreach ($tags as $tag){
-                    if(isset($_POST[$tag->term_id])){
+                    if(isset($_POST['TG_CheckBox'.$tag->term_id])){
                         $tagArray[$i] = $tag->term_id;
                         $groupArray[$i] = $groupID;
                         $i++;

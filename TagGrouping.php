@@ -3,7 +3,7 @@
 Plugin Name: Tag Grouping
 Plugin URI: http://www.croutonsoflife.com/wordpress/tag-grouping-plug-in-documentation-for-wordpress
 Description: Create and maintain groups of commonly used tags for posts. Add these groups to posts without having to add them individually.
-Version: 1.3.1
+Version: 1.4
 Author: Michael Gunnett
 Author URI: http://www.croutonsoflife.com
 
@@ -32,6 +32,7 @@ include("grouptags_page_delete_groups.php");
 include("grouptags_rules.php");
 include("grouptags_add_create_tag_functions.php");
 include("grouptags_return_group_tags.php");
+include("grouptags_display_elements.php");
 
 global $post_ID;
 
@@ -42,7 +43,11 @@ add_action ( 'admin_menu', 'render_tag_post_box' );
 add_action ( 'admin_menu', 'group_tag_admin_menu' );
 add_action ( 'save_post', 'update_group_posts' );
 add_action ( 'init', 'wp_load_scripts' );
+
+/* Ajax Actions */
 add_action ( 'wp_ajax_my-special-action', 'displayDivwithExistingTags' );
+add_action ( 'wp_ajax_toggle_tag_checkbox', 'tagTableRowAction' );
+
 
 /* Filter */
 add_filter( 'the_content', 'retrieve_postID');
