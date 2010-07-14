@@ -23,6 +23,8 @@ Author URI: http://www.croutonsoflife.com
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+$update = new updatePosts();
+
 //Include files
 include("grouptags_install.php");
 include("grouptags_db.php");
@@ -41,7 +43,7 @@ register_activation_hook(__FILE__, 'taggroups_install');
 /* Actions */
 add_action ( 'admin_menu', 'render_tag_post_box' );
 add_action ( 'admin_menu', 'group_tag_admin_menu' );
-add_action ( 'save_post', 'update_group_posts' );
+add_action ( 'save_post', Array(&$update, 'update_group_posts') );
 add_action ( 'init', 'wp_load_scripts' );
 
 /* Ajax Actions */
@@ -119,29 +121,24 @@ Loop through and find all group checkboxes that are enabled.
 Call write_group_posts to store these selections in the database.
 **********************************************************************************/
 
-function update_group_posts(){
+class updatePosts{
+    function update_group_posts($post_ID){
 
-$local_post_ID = get_postID();
-    
-if (wp_is_post_autosave($local_post_ID) || ($local_post_ID < 1) )
-{
+        If ( Defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) return;
 
-}
-else
-{
-    clear_group_posts();
+        clear_group_posts();
 
-    $groups = fetch_groups();
-    foreach ($groups as $group)
-    {
-        $group1 = str_replace(" ", "_",$group->groupName);
-        if(isset($_POST[$group1]))
+        $groups = fetch_groups();
+        foreach ($groups as $group)
         {
-            write_group_posts($group->groupID);
-            update_term_relationships_from_post($group->groupID);
+            $group1 = str_replace(" ", "_",$group->groupName);
+            if(isset($_POST[$group1]))
+            {
+                write_group_posts($group->groupID);
+                update_term_relationships_from_post($group->groupID);
+            }
         }
     }
-}
 }
 
 /*********************************************************************************

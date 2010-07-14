@@ -143,7 +143,7 @@ function fetch_group_term_ids($groupID){
 
 function clear_group_posts(){
     global $wpdb;
-    $local_post_ID = get_postID();
+    $local_post_ID =1;// get_postID();
 
     $table_name = $wpdb->prefix . "group_posts";
 
@@ -173,7 +173,7 @@ function clear_group_tags($groupID){
 
 function write_group_posts($groupID){
     global $wpdb;
-    $local_post_ID = get_postID();
+    $local_post_ID = 1;//get_postID();
 
     $table_name = $wpdb->prefix . "group_posts";
     $sql = "INSERT INTO " . $table_name . " VALUES ($groupID,  $local_post_ID)";
@@ -187,7 +187,7 @@ function write_group_posts($groupID){
 
 function get_post_groups(){
     global $wpdb;
-    $local_post_ID = get_postID();
+    $local_post_ID = 1;//get_postID();
 
     $results ="";
 
@@ -253,7 +253,7 @@ function write_group_tag($groupID, $term){
 
 function update_term_relationships_from_post($groupID){
     global $wpdb;
-    $local_post_ID = get_postID();
+    $local_post_ID = 1;//get_postID();
 
     $table_group_components = $wpdb->prefix . "group_components";
 
@@ -278,7 +278,7 @@ function update_term_relationships_from_post($groupID){
 
 function update_term_relationships_from_group($groupID, $tagArray){
     global $wpdb;
-    $local_post_ID = get_postID();
+    $local_post_ID = 1;//get_postID();
 
     $tag_string="";
 
