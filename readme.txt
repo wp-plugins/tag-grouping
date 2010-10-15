@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: gunnettmd
 Donate link: http://www.croutonsoflife.com/
-Tags: tags, group, post
+Tags: tags, group, post, tag group, group tag, group of tags, group my tags, post group of tags
 Requires at least: 2.9.1
 Tested up to: 3.0
 Stable tag: 1.4.4
